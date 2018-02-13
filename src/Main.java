@@ -4,11 +4,11 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    private static final Integer NUMBER_OF_MATCHES = 5;
-    private static final Integer n = 27;
+    private static final Integer NUMBER_OF_MATCHES = 6;
+    private static final Integer n = 43;
     private static final Integer R = 1;
     private static final Integer TIMES = 2;
-    private static final Integer MAX_MINUTES_EXECUTION_TIME = 2;
+    private static final Integer MAX_MINUTES_EXECUTION_TIME = 5;
 
     private static final Long INITIAL_TIME = System.nanoTime();
     private static final Long MAX_EXECUTION_TIME = MAX_MINUTES_EXECUTION_TIME * 60 * 1000000000L; // Minutes in nano seconds
@@ -25,9 +25,9 @@ public class Main {
         Set<String> totalPoints = generateS(ELEMENTS, NUMBER_OF_MATCHES);
 
         // Aplicamos las condiciones de la quiniela
-        Integer[] numberOfVariants = {2, 3};
-        Integer[] numberOfXs = {1, 2};
-        Integer[] numberOfTwos = {1, 2};
+        Integer[] numberOfVariants = {2, 3, 4};
+        Integer[] numberOfXs = {0, 1, 2};
+        Integer[] numberOfTwos = {0, 1, 2};
         Set<String> S = applyVariants(totalPoints, numberOfVariants, numberOfXs, numberOfTwos);
 
         List<Ball> maxCover = getMaxCoverExhaustiveAlgorithm(S, totalPoints, n);
@@ -66,7 +66,11 @@ public class Main {
                  Nosotros vamos a optar por devolver el mejor caso encontrado hasta el momento.
                  */
 
-                System.out.printf("Timeout! Best cover with n = %d. %n", (i + 1));
+                if(maxCover.isEmpty()) {
+                    System.out.printf("Not cover founded! Please try with n > %d. %n", maximumHeight);
+                } else {
+                    System.out.printf("Timeout! Best cover with n = %d. %n", (i + 1));
+                }
 
                 return maxCover;
             }
@@ -75,12 +79,12 @@ public class Main {
         return maxCover;
     }
 
-    private static List<Ball> getMaxCoverSimpleAlgorithm(Set<String> S, Set<String> totalPoints, Integer maxPointsToCover) throws TimeoutException {
+    private static List<Ball> getMaxCoverSimpleAlgorithm(Set<String> S, Set<String> totalPoints, Integer maxCoverPoints) throws TimeoutException {
 
         // Generamos del total de puntos disponibles un subconjunto C aleatorio.
         List<Ball> C = new ArrayList<>();
 
-        while(C.size() < maxPointsToCover) {
+        while(C.size() < maxCoverPoints) {
 
             String center = (String) Utils.getRandomElementFromCollection(totalPoints);
             Ball ball = new Ball(center);
