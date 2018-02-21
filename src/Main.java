@@ -4,11 +4,11 @@ import java.util.stream.Collectors;
 
 public class Main {
 
-    private static final Integer NUMBER_OF_MATCHES = 6;
-    private static final Integer n = 43;
+    private static final Integer NUMBER_OF_MATCHES = 7;
+    private static final Integer n = 504;
     private static final Integer R = 1;
     private static final Integer TIMES = 2;
-    private static final Integer MAX_MINUTES_EXECUTION_TIME = 5;
+    private static final Integer MAX_MINUTES_EXECUTION_TIME = 30;
 
     private static final Long INITIAL_TIME = System.nanoTime();
     private static final Long MAX_EXECUTION_TIME = MAX_MINUTES_EXECUTION_TIME * 60 * 1000000000L; // Minutes in nano seconds
@@ -19,18 +19,19 @@ public class Main {
     private static final Random RANDOM = new Random();
     private static final Set<Character> ELEMENTS = new HashSet<>(Arrays.asList('0', '1', '2'));
 
+    private static final Integer[] NUMBER_OF_VARIANTS = {2, 3, 4};
+    private static final Integer[] NUMBER_OF_X = {0, 1, 2};
+    private static final Integer[] NUMBER_OF_TWOS = {0, 1, 2};
+
     public static void main(String[] args) {
 
         // Generamos el espacio total
-        Set<String> totalPoints = generateS(ELEMENTS, NUMBER_OF_MATCHES);
+        Set<String> totalSpace = generateS(ELEMENTS, NUMBER_OF_MATCHES);
 
         // Aplicamos las condiciones de la quiniela
-        Integer[] numberOfVariants = {2, 3, 4};
-        Integer[] numberOfXs = {0, 1, 2};
-        Integer[] numberOfTwos = {0, 1, 2};
-        Set<String> S = applyVariants(totalPoints, numberOfVariants, numberOfXs, numberOfTwos);
+        Set<String> S = applyVariants(totalSpace, NUMBER_OF_VARIANTS, NUMBER_OF_X, NUMBER_OF_TWOS);
 
-        List<Ball> maxCover = getMaxCoverExhaustiveAlgorithm(S, totalPoints, n);
+        List<Ball> maxCover = getMaxCoverExhaustiveAlgorithm(S, totalSpace, n);
         System.out.println(maxCover);
     }
 
